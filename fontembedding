@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+'''Fontembedding: A simple python FontForge script to show the fstype (and a few other) fields  
+You need a recent version of FontForge with its python module.
+This works on all font formats FontForge supports.'''
+__copyright__ = 'Copyright (c) 2013, SIL International  (http://www.sil.org)'
+__license__ = 'Released under the MIT License (http://opensource.org/licenses/MIT)'
+__author__ = 'Nicolas Spalinger. Thanks to Martin Hosken for his help.'
+__version__ = '1.0'
+
+import fontforge, sys
+
+''' version checking to make sure we have a decently recent FontForge '''
+required_version = "20100212"
+if fontforge.version() < required_version:
+    print ("Your version of FontForge is too old - %s or newer is required" % (required_version))
+
+def main ():
+    for f in sys.argv[1:]:
+        font = fontforge.open(f)
+
+    ''' simple usage output '''
+    if (len(sys.argv) < 2):
+        print " "
+        print ("Fontembedding")
+        print ("---------------------------------------------------------------- ")
+        print "Usage: {0} [FILE.ttf|otf|woff|ufo|sfd/...]".format(sys.argv[0])
+        print (" ")
+        sys.exit(1)
+
+    ''' get the names for the sfnt object '''
+    names = {}
+    for n in font.sfnt_names :
+        if n[0] == "English (US)" :
+            names[n[1]] = n[2]
+    print ("Fontembedding:")
+    print ("---------------------------------------------------------------- ")
+    print (" ")
+    print ("File: " + font.path)
+    print (" ")
+    print ("Full name: " + font.fullname)
+    print (" ")
+    print ("Version: ")
+    print (font.version)
+    print (" ")
+    print ("Copyright: " + font.copyright)
+    print (" ")
+    print ("Embedding restrictions in OS2 fstype table - open fonts should have 0 (0:nothing 1:no-embedding 2:embedded-read-only-printable-previewable 3:embeddable-editable 4:editable-document 8:not-subsettable 9:bitmap-only. See http://partners.adobe.com/public/developer/opentype/index_os2.html#fst for details):")
+    print (font.os2_fstype)
+    print (" ")
+
+if __name__ == '__main__':
+    main()

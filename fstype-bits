@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+# sudo apt-get install fonttools
+
+from fontTools import ttLib
+import sys
+
+def main():
+    for ttf in sys.argv[1:]:
+        f = ttLib.TTFont(ttf)
+        print `ttf`,`f['OS/2'].fsType`
+
+if __name__ == '__main__':
+    main()

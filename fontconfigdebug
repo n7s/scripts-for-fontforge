@@ -1,0 +1,3 @@
+#!/bin/bash
+
+FC_DEBUG=4 $@ | egrep -A2 -e "Best score" -e "First font Pattern" | grep family: | sed 's:.*\(".*"\).*:\1:' | sort | uniq

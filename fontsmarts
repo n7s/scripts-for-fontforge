@@ -1,0 +1,77 @@
+#!/usr/bin/env python 
+#
+# A simple python fontforge script to show all the author metadata
+# and to check for best practises when filling in the various fields.
+# you need a recent version of fontforge.
+# The script works for all font formats fontforge supports.
+# 
+# See the various resources and websites of the open font community:
+# http://planet.open-fonts.org
+# http://utilities.open-fonts.org
+# 
+# Thanks to Martin Hosken
+# http://www.sil.org/~hosken/
+# 
+# Released under the MIT license.
+# Copyright (c) 2010 Nicolas Spalinger
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+
+import fontforge, sys
+
+if __name__ == "__main__":
+	if (len(sys.argv) < 2):
+		print "Usage: {0} font.ttf".format(sys.argv[0])
+		sys.exit(1)
+	font = fontforge.open(sys.argv[1])
+
+	print (" ")
+	print ("File: " + font.path)
+	print ("Fontname: " + font.fontname)
+	print ("Version: " + font.version)
+	print ("Weight: " + font.weight)
+	print ("Vendor OS2: " + font.os2_vendor)
+
+	print (" ")
+	print ("Encoding:")
+	print font.encoding
+
+	print (" ")
+	print ("Classes:" )
+	print font.markClasses
+	print "family class: " + str(font.os2_family_class)
+	print "panose: " + str(font.os2_panose)
+
+	print (" ")
+	print ("GSUB:")
+	print font.gsub_lookups
+	for l in range(len(font.gsub_lookups)):
+	    name = font.gsub_lookups[l]
+	    print str(l) + " " + name
+	    li = font.getLookupInfo(name)
+        print name + " " + str(li)
+
+	print (" ")
+	print ("GPOS:")
+	for l in range(len(font.gpos_lookups)):
+	    name = font.gpos_lookups[l]
+	    li = font.getLookupInfo(name)
+	    print name
+        print name + " " + str(li)
+

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# check for number of arguments
+if [ "$1" = "" ]
+then
+		echo "Usage: fontdiff A.ext B.ext"
+					exit 1
+				fi
+
+
+sfddiff --warn $1 $2 | less
